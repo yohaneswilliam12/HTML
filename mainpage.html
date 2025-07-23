@@ -396,10 +396,6 @@
                 transform: translateY(-15px);
             }
 
-            /* 85% {
-                transform: translateY(0);
-            } */
-
             100% {
                 transform: translateY(0);
             }
@@ -487,7 +483,8 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            transition: bottom 0.3s ease;
+            transition: transform 0.25s ease-in-out, width 0.25s ease-in-out, bottom 0.25s ease-in-out;
+
         }
 
         .icon-fan-list-item {
@@ -499,7 +496,7 @@
             align-items: self-end;
             justify-content: right;
             transform-origin: bottom center;
-            transition: transform 0.3s ease;
+            transition: transform 0.25s ease-in-out, width 0.25s ease-in-out, bottom 0.25s ease-in-out;
             width: 0;
         }
 
@@ -513,7 +510,7 @@
             scale: 0;
             transform-origin: right center;
             align-self: center;
-            transition: scale 0.3s ease, opacity 0.3s ease;
+            transition: scale 0.25s ease-in-out, opacity 0.25s ease-in-out;
         }
 
         .fan-file-icon {
@@ -1104,10 +1101,6 @@
             const x = i * 69;
             item.style.transform = `translateY(${x}px) translateX(0) rotate(0)`;
             item.querySelector(".fan-file-label").style.scale = 0;
-            setTimeout(function() {
-                item.style.width = "0";
-                item.querySelector(".fan-file-label").style.width = "0";
-            }, 250);
         });
     }
 
@@ -1120,14 +1113,10 @@
         openFolder(elmnt);
         elmnt.querySelectorAll(".icon-fan-list-item").forEach(item => {
             const i = parseInt(item.dataset.i);
-            const x = Math.pow(i, 2.4);
-            const r = Math.pow(i, 1.5);
+            const x = Math.pow(i, 2.25);
+            const r = (2) * (i+1);
             item.style.transform = `translateY(0) translateX(${x}px) rotate(${r}deg)`;
             item.querySelector(".fan-file-label").style.scale = 1;
-            setTimeout(function() {
-                item.style.width = "auto";
-                item.querySelector(".fan-file-label").style.width = "auto";
-            }, 0);
         });
         if (fanList) fanList.style.visibility = "visible";
     }
