@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html {
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+            margin: 0px;
+            background-color: blue;
+            background: url(https://blog.greggant.com/images/posts/2021-09-25-preview/aurora-preview.jpg) no-repeat;
+            background-size: cover;
+            width: 100%;
+            flex: 1;
+            height: 100%;
+            display: flex;
+        }
+
+        .menu-bar {
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(232, 232, 232, 0.8), rgba(146, 146, 146, 0.8));
+            align-content: center;
+            padding: 2px 16px;
+            display: flex;
+            flex-direction: row;
+            z-index: 1;
+        }
+
+        .left-menu {
+            flex: 1;
+        }
+
+        .right-menu {
+            align-content: center;
+            align-items: center;
+            display: flex;
+            gap: 10px;
+        }
+
+        .right-menu img {
+            height: 15px;
+        }
+
+        .menu-bar>div>ul {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            align-items: center;
+        }
+
+        .menu-bar>div>div {
+            font-size: 14px;
+        }
+
+        .apple-menu {
+            font-size: 18px;
+        }
+
+        .app-main-menu {
+            font-weight: bold;
+        }
+
+        .button {
+            border-radius: 40px;
+            position: relative;
+            border: 1px solid black;
+            overflow: hidden;
+            margin: 5px;
+        }
+
+        .highlight {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 50%, transparent);
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 4px;
+            right: 4px;
+            height: 30%;
+            border-radius: 20px;
+        }
+
+        .caption {
+            padding: 2px 4px 2px 4px;
+            font-size: 12px;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        @keyframes strobing {
+            0% {
+                filter: brightness(0.95)
+            }
+
+            100% {
+                filter: brightness(1.1);
+            }
+        }
+
+        .button:active {
+            filter: brightness(0.8);
+            animation: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to bottom, rgb(98, 168, 227) 50%, rgb(217, 235, 251));
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to bottom, rgb(212, 212, 212) 50%, rgb(246, 246, 246));
+        }
+
+        .strobing {
+            animation: strobing 1s ease infinite alternate;
+        }
+
+        .window-container {
+            background-color: rgb(229, 229, 229);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            overflow: hidden;
+            position: absolute;
+            left: 200px;
+            top: 200px;
+            width: 600px;
+            height: 400px;
+            border: 1px solid black;
+            filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+        }
+
+        .bottom-action {
+            display: flex;
+            padding: 5px 10px 5px 10px;
+            justify-content: flex-end;
+        }
+
+        .dummy-placeholder {
+            background-color: black;
+            width: auto;
+            height: 80%;
+        }
+
+        .title-bar {
+            background: linear-gradient(to bottom, rgb(232, 232, 232), rgb(146, 146, 146));
+            align-content: center;
+            padding: 10px 16px 10px 16px;
+        }
+
+        .title-buttons {
+            width: min-content;
+            display: flex;
+            flex-direction: row;
+            gap: 6px;
+        }
+
+        .title-button-icon {
+            display: none;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+
+        }
+
+        .title-buttons:hover .title-button-icon {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-button {
+            border-radius: 30px;
+            width: 15px;
+            height: 15px;
+            box-shadow: inset 0px 0px 2px 1px rgba(50, 50, 50, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .title-button-highlight {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 30%, transparent 70%);
+            overflow: hidden;
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            right: 4px;
+            height: 40%;
+            border-radius: 20px;
+        }
+
+        .btn-close {
+            background: linear-gradient(to bottom, rgb(216, 48, 46)50%, rgb(236, 182, 180));
+        }
+
+        .btn-minimize {
+            background: linear-gradient(to bottom, rgb(236, 183, 92)50%, rgb(250, 235, 185));
+        }
+
+        .btn-fullscreen {
+            background: linear-gradient(to bottom, rgb(145, 211, 115)50%, rgb(203, 228, 174));
+        }
+
+        .dock-container {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            transform-origin: bottom center;
+        }
+
+        .dock {
+            width: 1300px;
+            height: 60px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23b5b3bd' d='M0,0H1440V160C1200,80 960,240 720,160C480,80 240,240 0,160Z'/><path fill='%239a99a2' d='M0,160C240,240 480,80 720,160C960,240 1200,80 1440,160V320H0Z'/></svg>");
+            background-size: cover;
+            opacity: 80%;
+            clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            box-sizing: border-box;
+            margin-bottom: 3px;
+        }
+
+        .dock-item-container {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            bottom: 0;
+            border-bottom: 3px solid #bfbec6cc;
+            width: 1300px;
+        }
+
+        .dock-highlight-container {
+            position: absolute;
+            bottom: 10px;
+            width: 86%;
+            height: 5px;
+            align-self: center;
+            justify-items: center;
+        }
+
+        .dock-highlight-container-reflection {
+            position: absolute;
+            bottom: -2px;
+            width: 86%;
+            height: 5px;
+            align-self: center;
+            justify-items: center;
+        }
+
+        .dock-highlight-item {
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .dock-highlight {
+            width: 64px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .highlight-item {
+            visibility: hidden;
+            width: 12px;
+            height: 100%;
+            background-color: white;
+            border-radius: 80%;
+            filter: blur(0.8px);
+            box-shadow: 0 0 100px white, 0 0 10px rgb(41, 227, 255), 0 0 10px rgb(41, 227, 255);
+        }
+
+        .highlight-item-active {
+            visibility: unset;
+        }
+
+        .dock-highlight-separator {
+            width: 20px;
+        }
+
+        .dock-item {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: end;
+            gap: 10px;
+            z-index: 1;
+        }
+
+        .dock-reflection {
+            position: absolute;
+            bottom: -40px;
+        }
+
+        .dock-item-reflection {
+            display: flex;
+            margin-bottom: 0px;
+            align-items: end;
+            gap: 10px;
+            transform: scaleY(-1);
+            opacity: 20%;
+        }
+
+        .separator-container {
+            width: 20px;
+            height: 50px;
+            margin-bottom: -2px;
+            gap: 3px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: ns-resize;
+            opacity: 50%;
+        }
+
+        .dock-reflection .separator-container {
+            visibility: hidden;
+        }
+
+        .separator-line {
+            clip-path: polygon(2% 0%, 98% 0%, 100% 100%, 0% 100%);
+            background-color: #d6d6e2;
+        }
+
+        .separator-line-1 {
+            width: 20px;
+            height: 20px;
+        }
+
+        .separator-line-2 {
+            width: 19px;
+            height: 19px;
+        }
+
+        .separator-line-3 {
+            width: 18px;
+            height: 18px;
+        }
+
+        .separator-line-4 {
+            width: 17px;
+            height: 17px;
+        }
+
+        .separator-line-5 {
+            width: 16px;
+            height: 16px;
+        }
+
+        .separator-line-6 {
+            width: 15px;
+            height: 15px;
+        }
+
+        .separator-line-7 {
+            width: 14px;
+            height: 14px;
+        }
+
+        .separator-line-8 {
+            width: 13px;
+            height: 13px;
+        }
+
+        @keyframes app-bounce {
+            0% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-15px);
+            }
+
+            50% {
+                transform: translateY(-16px);
+            }
+
+            60% {
+                transform: translateY(-15px);
+            }
+
+            /* 85% {
+                transform: translateY(0);
+            } */
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .app-icon {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .app-icon:active {
+            filter: brightness(0.5)
+        }
+
+        .app-icon-settings {
+            overflow: hidden;
+            border-radius: 5px;
+            height: 56px;
+            margin-bottom: 5px;
+        }
+
+        .app-icon-settings-zoom {
+            width: 64px;
+            height: 64px;
+            scale: 1.09;
+            padding-bottom: 95px;
+        }
+
+        .icon-wrapper {
+            position: relative;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 75px;
+            background-color: rgba(0, 0, 0, 0.469);
+            border-radius: 20px;
+            padding: 2px 12px;
+            width: max-content;
+            visibility: hidden;
+            color: white;
+            text-align: center;
+            align-self: center;
+        }
+
+        .icon-wrapper:hover .tooltip {
+            visibility: unset;
+        }
+
+        .collapse-folder-button {
+            width: 44px;
+            height: 39px;
+            position: absolute;
+            bottom: 0;
+            display: none;
+            background-color: rgba(200, 200, 200, 0.5);
+            border-radius: 10px;
+            border: 2px solid white;
+            justify-content: center;
+            align-self: center;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+            z-index: -1;
+            transition: display 0.3s ease;
+        }
+
+        .chevron-bottom {
+            border-bottom: 2px solid white;
+            border-right: 2px solid white;
+            align-self: center;
+            width: 10px;
+            height: 10px;
+            rotate: 45deg;
+        }
+
+        .icon-fan-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            transition: bottom 0.3s ease;
+            visibility: hidden;
+        }
+
+        .icon-fan-list-item {
+            position: relative;
+            list-style: none;
+            margin: 5px 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            transform-origin: bottom center;
+            transition: transform 0.3s ease;
+        }
+
+        .fan-file-label {
+            border: 1px solid black;
+            background-color: rgba(200, 200, 200, 0.8);
+            padding: 4px 8px;
+            border-radius: 5px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+        .fan-file-icon {
+            width: 64px;
+            height: 64px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu-bar">
+        <div class="left-menu">
+            <ul>
+                <li class="apple-menu"></li>
+                <li class="app-main-menu">System Information</li>
+                <li>File</li>
+                <li>Edit</li>
+                <li>View</li>
+                <li>Window</li>
+                <li>Help</li>
+            </ul>
+        </div>
+        <div class="right-menu">
+            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/24x24/status/bluetooth-active.svg"
+                alt="">
+            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/16x16/status/nm-signal-75.svg"
+                alt="" srcset="">
+            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/22x22/status/audio-volume-high-panel.svg"
+                alt="">
+            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/scalable/status/battery_charged.svg"
+                alt="">
+            <div class="clock">Fri 2 May 5.20 PM</div>
+            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/actions/system-search.png"
+                alt="">
+        </div>
+    </div>
+    <div class="window-container" id="window-container">
+        <div class="title-bar" id="title-bar">
+            <div class="title-buttons">
+                <div class="title-button btn-close" id="btn-close">
+                    <div class="title-button-icon">×</div>
+                    <div class="title-button-highlight"></div>
+                </div>
+                <div class="title-button btn-minimize">
+                    <div class="title-button-icon">–</div>
+                    <div class="title-button-highlight"></div>
+                </div>
+                <div class="title-button btn-fullscreen">
+                    <div class="title-button-icon">⤢</div>
+                    <div class="title-button-highlight"></div>
+                </div>
+            </div>
+        </div>
+        <div class="dummy-placeholder"></div>
+        <div class="bottom-action">
+            <button class="button btn-secondary">
+                <div class="highlight">
+                </div>
+                <div class="caption">
+                    No, thanks
+                </div>
+            </button>
+            <button class="button btn-primary strobing bold" id="btn-accept">
+                <div class="highlight">
+                </div>
+                <div class="caption">
+                    Accept
+                </div>
+            </button>
+        </div>
+    </div>
+    <div class="dock-container">
+        <div class="dock"></div>
+        <div class="dock-highlight-container">
+            <div class="dock-highlight-item">
+                <div class="dock-highlight">
+                    <div class="highlight-item highlight-item-active"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item highlight-item-active"></div>
+                </div>
+                <div class="dock-highlight-separator"></div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+            </div>
+        </div>
+        <div class="dock-highlight-container-reflection">
+            <div class="dock-highlight-item">
+                <div class="dock-highlight">
+                    <div class="highlight-item highlight-item-active"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item highlight-item-active"></div>
+                </div>
+                <div class="dock-highlight-separator"></div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+                <div class="dock-highlight">
+                    <div class="highlight-item"></div>
+                </div>
+            </div>
+        </div>
+        <div class="dock-item-container">
+            <div class="dock-item">
+                <span class="icon-wrapper icon-application">
+                    <img src="https://icons.iconarchive.com/icons/gabriel-leblanc/finder/256/08-Finder-icon.png"
+                        class="app-icon" alt="Finder">
+                    <div class="tooltip">Finder</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://images.sftcdn.net/images/t_app-cover-s,f_auto/p/778cce46-99ec-11e6-89d2-00163ed833e7/642207430/mac-os-x-lion-icon-pack-screenshot.png"
+                        class="app-icon" alt="Dashboard">
+                    <div class="tooltip">Dashboard</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://pngimg.com/uploads/safari/safari_PNG31.png" class="app-icon" alt="Safari" />
+                    <div class="tooltip">Safari</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://upload.wikimedia.org/wikipedia/fr/a/a9/IChat.png" class="app-icon" alt="iChat" />
+                    <div class="tooltip">iChat</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://bowerwebsolutions.com/wp-content/uploads/2014/09/macmailicon.png" class="app-icon"
+                        alt="Mail">
+                    <div class="tooltip">Mail</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://i0.wp.com/www.defaults-write.com/wp-content/uploads/2012/08/ICal_Icon.png?fit=512%2C512&ssl=1"
+                        class="app-icon" alt="iCal" />
+                    <div class="tooltip">iCal</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://i0.wp.com/clkoerner.com/wordpress/wp-content/uploads/2009/09/itunes.png?ssl=1"
+                        class="app-icon" alt="iTunes">
+                    <div class="tooltip">iTunes</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://preview.redd.it/some-old-icons-for-the-mac-version-of-ms-office-v0-v4wtbusb4j2b1.png?width=128&amp;format=png&amp;auto=webp&amp;s=4d3eda95131a734fe784e032930d77b0db0b9389"
+                        class="app-icon" alt="Microsoft Word">
+                    <div class="tooltip">Microsoft Word</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://icons.veryicon.com/png/Application/Microsoft%20Office%20Mac/Excel%20Mac.png"
+                        class="app-icon" alt="Microsoft Excel">
+                    <div class="tooltip">Microsoft Excel</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://images.freeimages.com/fic/images/icons/712/microsoft_office_mac/300/powerpoint_mac.png"
+                        class="app-icon" alt="Microsoft Powerpoint">
+                    <div class="tooltip">Microsoft Powerpoint</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://i0.wp.com/www.defaults-write.com/wp-content/uploads/2012/08/snow_leopard_quicktime_x_icon.png?fit=512%2C512&ssl=1"
+                        class="app-icon" alt="Quicktime Player">
+                    <div class="tooltip">Quicktime Player</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <div class="app-icon app-icon-settings">
+                        <img src="https://w7.pngwing.com/pngs/630/904/png-transparent-system-preferences-preference-pane-computer-icons-apple-rim-fruit-nut-mac-thumbnail.png"
+                            class="app-icon-settings-zoom" alt="Settings" />
+                    </div>
+                    <div class="tooltip">Settings</div>
+                </span>
+                <span class="icon-wrapper icon-application">
+                    <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/emblems/emblem-question.png"
+                        class="app-icon" alt="System Information">
+                    <div class="tooltip">System Information</div>
+                </span>
+                <div class="separator-container" id="dock-resizer">
+                    <div class="separator-line separator-line-8"></div>
+                    <div class="separator-line separator-line-7"></div>
+                    <div class="separator-line separator-line-6"></div>
+                    <div class="separator-line separator-line-5"></div>
+                    <div class="separator-line separator-line-4"></div>
+                    <div class="separator-line separator-line-3"></div>
+                    <div class="separator-line separator-line-2"></div>
+                    <div class="separator-line separator-line-1"></div>
+                </div>
+                <span class="icon-wrapper icon-folder" id="folder-application">
+                    <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/places/folder2.png"
+                        class="app-icon" alt="Applications">
+                    <div class="collapse-folder-button">
+                        <div class="chevron-bottom"></div>
+                    </div>
+                    <div class="tooltip">Applications</div>
+                </span>
+                <span class="icon-wrapper icon-folder" id="folder-download">
+                    <ul class="icon-fan-list">
+                        <li class="icon-fan-list-item" data-i="6">
+                            <div class="fan-file-label">Audacity</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
+                                class="fan-file-icon" alt="Audacity">
+                        </li>
+                        <li class="icon-fan-list-item" data-i="5">
+                            <div class="fan-file-label">Audacity</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
+                                class="fan-file-icon" alt="Audacity">
+                        </li>
+                        <li class="icon-fan-list-item" data-i="4">
+                            <div class="fan-file-label">Audacity</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
+                                class="fan-file-icon" alt="Audacity">
+                        </li>
+                        <li class="icon-fan-list-item" data-i="3">
+                            <div class="fan-file-label">Audacity</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
+                                class="fan-file-icon" alt="Audacity">
+                        </li>
+                        <li class="icon-fan-list-item" data-i="2">
+                            <div class="fan-file-label">Audacity</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
+                                class="fan-file-icon" alt="Audacity">
+                        </li>
+                        <li class="icon-fan-list-item" data-i="1">
+                            <div class="fan-file-label">Audacity</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
+                                class="fan-file-icon" alt="Audacity">
+                        </li>
+                        <li class="icon-fan-list-item" data-i="0">
+                            <div class="fan-file-label">Audacity</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
+                                class="fan-file-icon" alt="Audacity">
+                        </li>
+                    </ul>
+                    <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/places/folder5.png"
+                        class="app-icon" alt="Downloads">
+                    <div class="collapse-folder-button">
+                        <div class="chevron-bottom"></div>
+                    </div>
+                    <div class="tooltip">Downloads</div>
+                </span>
+                <span class="icon-wrapper icon-folder">
+                    <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/refs/heads/master/128x128/emblems/emblem-trash.png"
+                        class="app-icon" alt="Trash">
+                    <div class="tooltip">Trash</div>
+                </span>
+            </div>
+            <div class="dock-reflection">
+                <div class="dock-item-reflection">
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://icons.iconarchive.com/icons/gabriel-leblanc/finder/256/08-Finder-icon.png"
+                            class="app-icon" alt="Finder">
+                        <div class="tooltip">Finder</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://images.sftcdn.net/images/t_app-cover-s,f_auto/p/778cce46-99ec-11e6-89d2-00163ed833e7/642207430/mac-os-x-lion-icon-pack-screenshot.png"
+                            class="app-icon" alt="Dashboard">
+                        <div class="tooltip">Dashboard</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://pngimg.com/uploads/safari/safari_PNG31.png" class="app-icon" alt="Safari" />
+                        <div class="tooltip">Safari</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://upload.wikimedia.org/wikipedia/fr/a/a9/IChat.png" class="app-icon"
+                            alt="iChat" />
+                        <div class="tooltip">iChat</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://bowerwebsolutions.com/wp-content/uploads/2014/09/macmailicon.png"
+                            class="app-icon" alt="Mail">
+                        <div class="tooltip">Mail</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://i0.wp.com/www.defaults-write.com/wp-content/uploads/2012/08/ICal_Icon.png?fit=512%2C512&ssl=1"
+                            class="app-icon" alt="iCal" />
+                        <div class="tooltip">iCal</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://i0.wp.com/clkoerner.com/wordpress/wp-content/uploads/2009/09/itunes.png?ssl=1"
+                            class="app-icon" alt="iTunes">
+                        <div class="tooltip">iTunes</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://preview.redd.it/some-old-icons-for-the-mac-version-of-ms-office-v0-v4wtbusb4j2b1.png?width=128&amp;format=png&amp;auto=webp&amp;s=4d3eda95131a734fe784e032930d77b0db0b9389"
+                            class="app-icon" alt="Microsoft Word">
+                        <div class="tooltip">Microsoft Word</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://icons.veryicon.com/png/Application/Microsoft%20Office%20Mac/Excel%20Mac.png"
+                            class="app-icon" alt="Microsoft Excel">
+                        <div class="tooltip">Microsoft Excel</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://images.freeimages.com/fic/images/icons/712/microsoft_office_mac/300/powerpoint_mac.png"
+                            class="app-icon" alt="Microsoft Powerpoint">
+                        <div class="tooltip">Microsoft Powerpoint</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://i0.wp.com/www.defaults-write.com/wp-content/uploads/2012/08/snow_leopard_quicktime_x_icon.png?fit=512%2C512&ssl=1"
+                            class="app-icon" alt="Quicktime Player">
+                        <div class="tooltip">Quicktime Player</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <div class="app-icon app-icon-settings">
+                            <img src="https://w7.pngwing.com/pngs/630/904/png-transparent-system-preferences-preference-pane-computer-icons-apple-rim-fruit-nut-mac-thumbnail.png"
+                                class="app-icon-settings-zoom" alt="Settings" />
+                        </div>
+                        <div class="tooltip">Settings</div>
+                    </span>
+                    <span class="icon-wrapper icon-application">
+                        <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/emblems/emblem-question.png"
+                            class="app-icon" alt="System Information">
+                        <div class="tooltip">System Information</div>
+                    </span>
+                    <div class="separator-container" id="dock-resizer">
+                        <div class="separator-line separator-line-8"></div>
+                        <div class="separator-line separator-line-7"></div>
+                        <div class="separator-line separator-line-6"></div>
+                        <div class="separator-line separator-line-5"></div>
+                        <div class="separator-line separator-line-4"></div>
+                        <div class="separator-line separator-line-3"></div>
+                        <div class="separator-line separator-line-2"></div>
+                        <div class="separator-line separator-line-1"></div>
+                    </div>
+                    <span class="icon-wrapper icon-folder" id="folder-application-reflection">
+                        <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/places/folder2.png"
+                            class="app-icon" alt="Applications">
+                        <div class="collapse-folder-button">
+                            <div class="chevron-bottom"></div>
+                        </div>
+                        <div class="tooltip">Applications</div>
+                    </span>
+                    <span class="icon-wrapper icon-folder" id="folder-download-reflection">
+                        <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/places/folder5.png"
+                            class="app-icon" alt="Downloads">
+                        <div class="collapse-folder-button">
+                            <div class="chevron-bottom"></div>
+                        </div>
+                        <div class="tooltip">Downloads</div>
+                    </span>
+                    <span class="icon-wrapper icon-folder">
+                        <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/refs/heads/master/128x128/emblems/emblem-trash.png"
+                            class="app-icon" alt="Trash">
+                        <div class="tooltip">Trash</div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const windowContainer = document.getElementById("window-container");
+    const closeButton = document.getElementById("btn-close");
+    const acceptButton = document.getElementById("btn-accept");
+    const appIconWrappers = document.querySelectorAll(".icon-application");
+    const appIconReflectionWrappers = document.getElementsByClassName("dock-item-reflection")[0].querySelectorAll(".icon-wrapper");
+    const separatorResizer = document.getElementById("dock-resizer");
+    const dockContainer = document.querySelectorAll(".dock-container");
+    const dockIndicators = document.querySelectorAll(".dock-highlight");
+    const applicationFolder = document.getElementById("folder-application");
+    const downloadFolder = document.getElementById("folder-download");
+    const applicationFolderReflection = document.getElementById("folder-application-reflection");
+    const downloadFolderReflection = document.getElementById("folder-download-reflection");
+    const tooltips = document.querySelectorAll(".tooltip");
+
+    dragElement(windowContainer);
+    closeWindow(closeButton);
+    closeWindow(acceptButton);
+    appIconWrappers.forEach((item, index) => {
+        appBouncing(item, index);
+    });
+    resizeDock(separatorResizer);
+    gridOpen(applicationFolder, applicationFolderReflection);
+    fanOpen(downloadFolder, downloadFolderReflection);
+
+    function dragElement(elmnt) {
+        const header = document.getElementById("title-bar");
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        (header || elmnt).onmousedown = dragMouseDown;
+
+        function dragMouseDown(e) {
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    function closeWindow(elmnt) {
+        elmnt.addEventListener("click", function (e) {
+            windowContainer.style.display = 'none';
+        });
+    }
+
+    function appBouncing(elmnt, index) {
+        elmnt.firstElementChild.addEventListener("click", function (e) {
+            if (!isApplicationActive(index)) {
+                elmnt.style.animation = "none";
+                void elmnt.offsetWidth;
+                elmnt.style.animation = "app-bounce 0.6s ease-in-out 1";
+
+                appIconReflectionWrappers[index].style.animation = "none";
+                void appIconReflectionWrappers[index].offsetWidth;
+                appIconReflectionWrappers[index].style.animation = "app-bounce 0.6s ease-in-out 1";
+                setTimeout(function () {
+                    setApplicationActive(index);
+                }, 600);
+            }
+        })
+    }
+
+    function setApplicationActive(index) {
+        dockIndicators[index].querySelector("div").classList.add("highlight-item-active");
+    }
+
+    function isApplicationActive(index) {
+        if (dockIndicators[index].querySelector("div").classList.contains("highlight-item-active")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function gridOpen(elmnt, refElmnt) {
+        elmnt.addEventListener("click", function (e) {
+            setBodyClickCloseGridFolder(elmnt, refElmnt);
+            toggleGridFolder(elmnt);
+            toggleGridFolder(refElmnt);
+
+        })
+    }
+
+    function fanOpen(elmnt, refElmnt) {
+        closeFanFolder(elmnt);
+        elmnt.addEventListener("click", function (e) {
+            setBodyClickCloseFanFolder(elmnt, refElmnt);
+            toggleFanFolder(elmnt);
+            toggleFanFolder(refElmnt);
+
+        })
+    }
+
+    function closeGridFolder(elmnt) {
+
+        closeFolder(elmnt);
+
+
+    }
+
+    function openGridFolder(elmnt) {
+
+        openFolder(elmnt);
+
+    }
+
+
+    function closeFanFolder(elmnt) {
+        const fanList = elmnt.querySelector(".icon-fan-list");
+        if (fanList) fanList.style.bottom = "0";
+        closeFolder(elmnt);
+        setTimeout(function () {
+            if (fanList) fanList.style.visibility = "hidden";
+        }, 250);
+        elmnt.querySelectorAll(".icon-fan-list-item").forEach(item => {
+            const i = parseInt(item.dataset.i);
+            const x = i * 70;
+            item.style.transform = `translateY(${x}px) translateX(0) rotate(0)`;
+        });
+    }
+
+    function openFanFolder(elmnt) {
+        const fanList = elmnt.querySelector(".icon-fan-list");
+        if (fanList) fanList.style.bottom = "70px";
+        openFolder(elmnt);
+        elmnt.querySelectorAll(".icon-fan-list-item").forEach(item => {
+            const i = parseInt(item.dataset.i);
+            const x = Math.pow(i, 2.4);
+            const r = Math.pow(i, 1.5);
+            item.style.transform = `translateY(0) translateX(${x}px) rotate(${r}deg)`;
+        });
+        if (fanList) fanList.style.visibility = "visible";
+    }
+
+    function closeFolder(elmnt) {
+        elmnt.querySelector(".app-icon").style.visibility = "unset";
+        elmnt.querySelector(".app-icon").style.opacity = "1";
+        elmnt.querySelector(".collapse-folder-button").style.display = "none";
+        tooltips.forEach(tooltip => {
+            tooltip.style.display = "unset";
+        });
+    }
+
+    function openFolder(elmnt) {
+        elmnt.querySelector(".app-icon").style.visibility = "hidden";
+        elmnt.querySelector(".app-icon").style.opacity = "0";
+        elmnt.querySelector(".collapse-folder-button").style.display = "flex";
+        tooltips.forEach(tooltip => {
+            tooltip.style.display = "none";
+        });
+    }
+
+    function toggleFolder(elmnt) {
+        if (elmnt.querySelector(".app-icon").style.opacity == "0") {//hide
+            closeFolder(elmnt);
+        } else {                                                    //show
+            openFolder(elmnt);
+        }
+    }
+
+    function toggleGridFolder(elmnt) {
+        if (elmnt.querySelector(".app-icon").style.opacity == "0") {//hide
+            closeGridFolder(elmnt);
+        } else {                                                    //show
+            openGridFolder(elmnt);
+        }
+    }
+
+    function toggleFanFolder(elmnt) {
+        if (elmnt.querySelector(".app-icon").style.opacity == "0") {//hide
+            closeFanFolder(elmnt);
+        } else {                                                    //show
+            openFanFolder(elmnt);
+        }
+    }
+
+    function resizeDock(elmnt) {
+        let startY = 0;
+
+        elmnt.onmousedown = function (e) {
+            e.preventDefault();
+            startY = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        };
+
+        function elementDrag(e) {
+            e.preventDefault();
+            const deltaY = e.clientY - startY;
+            const scaleFactor = 1 - deltaY / 100;
+            dockContainer.forEach(item => {
+                const clamped = Math.max(0.5, Math.min(2, scaleFactor));
+                if (clamped <= 1.15 && clamped >= 0.62) {
+                    item.style.transform = `scale(${clamped})`;
+                }
+            });
+        }
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    function setBodyClickCloseGridFolder(elmnt, refElmnt) {
+        function removeClickListener(e) {
+            e.stopPropagation();
+            if (!elmnt.contains(e.target)) {
+                closeGridFolder(elmnt);
+                closeGridFolder(refElmnt);
+                document.removeEventListener("click", removeClickListener);
+            }
+        }
+        setTimeout(() => {
+            document.addEventListener("click", removeClickListener);
+        }, 0);
+    }
+
+    function setBodyClickCloseFanFolder(elmnt, refElmnt) {
+        function removeClickListener(e) {
+            e.stopPropagation();
+            if (!elmnt.contains(e.target)) {
+                closeFanFolder(elmnt);
+                closeFanFolder(refElmnt);
+                document.removeEventListener("click", removeClickListener);
+            }
+        }
+        setTimeout(() => {
+            document.addEventListener("click", removeClickListener);
+        }, 0);
+    }
+
+
+</script>
+
+</html>
