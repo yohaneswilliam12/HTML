@@ -508,6 +508,7 @@
             margin: 0 10px;
             font-size: 16px;
             scale: 0;
+            white-space: nowrap;
             transform-origin: right center;
             align-self: center;
             transition: scale 0.25s ease-in-out, opacity 0.25s ease-in-out;
@@ -516,6 +517,21 @@
         .fan-file-icon {
             width: 64px;
             height: 64px;
+        }
+
+        .fan-open-in-finder {
+            border-radius: 50%;
+            background-color: rgba(200, 200, 200, 0.5);
+            border: 1px solid black;
+            width: 30px;
+            height: 30px;
+            rotate: 45deg;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            justify-self: center;
+            padding: 10px;
+            margin: 10px;
         }
     </style>
 </head>
@@ -777,6 +793,10 @@
                 </span>
                 <span class="icon-wrapper icon-folder" id="folder-download">
                     <ul class="icon-fan-list">
+                        <li class="icon-fan-list-item" data-i="7">
+                            <div class="fan-file-label">Open in Finder</div>
+                            <img src="https://static.thenounproject.com/png/258144-200.png" class="fan-file-icon fan-open-in-finder" alt="">
+                        </li>
                         <li class="icon-fan-list-item" data-i="6">
                             <div class="fan-file-label">Audacity</div>
                             <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
@@ -976,6 +996,7 @@
     const separatorResizer = document.getElementById("dock-resizer");
     const dockContainer = document.querySelectorAll(".dock-container");
     const dockIndicators = document.querySelectorAll(".dock-highlight");
+    const dockIndicatorReflections = document.querySelector(".dock-highlight-container-reflection").firstElementChild.querySelectorAll(".dock-highlight");
     const applicationFolder = document.getElementById("folder-application");
     const downloadFolder = document.getElementById("folder-download");
     const applicationFolderReflection = document.getElementById("folder-application-reflection");
@@ -1047,6 +1068,7 @@
 
     function setApplicationActive(index) {
         dockIndicators[index].querySelector("div").classList.add("highlight-item-active");
+        dockIndicatorReflections[index].querySelector("div").classList.add("highlight-item-active");
     }
 
     function isApplicationActive(index) {
@@ -1107,7 +1129,7 @@
     function openFanFolder(elmnt) {
         const fanList = elmnt.querySelector(".icon-fan-list");
         if (fanList) {
-            fanList.style.bottom = "70px";
+            fanList.style.bottom = "60px";
             fanList.style.width = "auto";
         }
         openFolder(elmnt);
