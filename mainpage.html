@@ -222,7 +222,7 @@
         }
 
         .dock {
-            width: 1300px;
+            min-width: 1300px;
             height: 60px;
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%23b5b3bd' d='M0,0H1440V160C1200,80 960,240 720,160C480,80 240,240 0,160Z'/><path fill='%239a99a2' d='M0,160C240,240 480,80 720,160C960,240 1200,80 1440,160V320H0Z'/></svg>");
             background-size: cover;
@@ -488,7 +488,6 @@
             bottom: 0;
             right: 0;
             transition: bottom 0.3s ease;
-            visibility: hidden;
         }
 
         .icon-fan-list-item {
@@ -497,9 +496,11 @@
             margin: 5px 0;
             padding: 0;
             display: flex;
-            align-items: center;
+            align-items: self-end;
+            justify-content: right;
             transform-origin: bottom center;
             transition: transform 0.3s ease;
+            width: 0;
         }
 
         .fan-file-label {
@@ -509,6 +510,11 @@
             border-radius: 5px;
             margin: 0 10px;
             font-size: 16px;
+            scale: 0;
+            transform-origin: right center;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            transition: scale 0.3s ease, opacity 0.3s ease;
         }
 
         .fan-file-icon {
@@ -781,38 +787,38 @@
                                 class="fan-file-icon" alt="Audacity">
                         </li>
                         <li class="icon-fan-list-item" data-i="5">
-                            <div class="fan-file-label">Audacity</div>
-                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
-                                class="fan-file-icon" alt="Audacity">
+                            <div class="fan-file-label">Document.pdf</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/pdf.png"
+                                class="fan-file-icon" alt="Document">
                         </li>
                         <li class="icon-fan-list-item" data-i="4">
-                            <div class="fan-file-label">Audacity</div>
-                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
-                                class="fan-file-icon" alt="Audacity">
+                            <div class="fan-file-label">Bootcamp</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/bootcamp.png"
+                                class="fan-file-icon" alt="Bootcamp">
                         </li>
                         <li class="icon-fan-list-item" data-i="3">
-                            <div class="fan-file-label">Audacity</div>
-                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
-                                class="fan-file-icon" alt="Audacity">
+                            <div class="fan-file-label">News.pages</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/pan.png"
+                                class="fan-file-icon" alt="News">
                         </li>
                         <li class="icon-fan-list-item" data-i="2">
-                            <div class="fan-file-label">Audacity</div>
-                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
-                                class="fan-file-icon" alt="Audacity">
+                            <div class="fan-file-label">Opera.dmg</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/opera.png"
+                                class="fan-file-icon" alt="Opera">
                         </li>
                         <li class="icon-fan-list-item" data-i="1">
-                            <div class="fan-file-label">Audacity</div>
-                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
-                                class="fan-file-icon" alt="Audacity">
+                            <div class="fan-file-label">OpenJDK-6.dmg</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/openjdk-6.png"
+                                class="fan-file-icon" alt="OpenJDK">
                         </li>
                         <li class="icon-fan-list-item" data-i="0">
-                            <div class="fan-file-label">Audacity</div>
-                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
-                                class="fan-file-icon" alt="Audacity">
+                            <div class="fan-file-label">AdobeReader8.dmg</div>
+                            <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/AdobeReader8.png"
+                                class="fan-file-icon" alt="Adobe Reader 8">
                         </li>
                     </ul>
                     <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/places/folder5.png"
-                        class="app-icon" alt="Downloads">
+                        class="app-icon" style="opacity: 0;" alt="Downloads">
                     <div class="collapse-folder-button">
                         <div class="chevron-bottom"></div>
                     </div>
@@ -911,8 +917,45 @@
                         <div class="tooltip">Applications</div>
                     </span>
                     <span class="icon-wrapper icon-folder" id="folder-download-reflection">
+                        <ul class="icon-fan-list">
+                            <li class="icon-fan-list-item" data-i="6">
+                                <div class="fan-file-label">Audacity</div>
+                                <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/audacity.png"
+                                    class="fan-file-icon" alt="Audacity">
+                            </li>
+                            <li class="icon-fan-list-item" data-i="5">
+                                <div class="fan-file-label">Document.pdf</div>
+                                <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/pdf.png"
+                                    class="fan-file-icon" alt="Document">
+                            </li>
+                            <li class="icon-fan-list-item" data-i="4">
+                                <div class="fan-file-label">Bootcamp</div>
+                                <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/bootcamp.png"
+                                    class="fan-file-icon" alt="Bootcamp">
+                            </li>
+                            <li class="icon-fan-list-item" data-i="3">
+                                <div class="fan-file-label">News.pages</div>
+                                <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/pan.png"
+                                    class="fan-file-icon" alt="News">
+                            </li>
+                            <li class="icon-fan-list-item" data-i="2">
+                                <div class="fan-file-label">Opera.dmg</div>
+                                <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/opera.png"
+                                    class="fan-file-icon" alt="Opera">
+                            </li>
+                            <li class="icon-fan-list-item" data-i="1">
+                                <div class="fan-file-label">OpenJDK-6.dmg</div>
+                                <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/openjdk-6.png"
+                                    class="fan-file-icon" alt="OpenJDK">
+                            </li>
+                            <li class="icon-fan-list-item" data-i="0">
+                                <div class="fan-file-label">AdobeReader8.dmg</div>
+                                <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/AdobeReader8.png"
+                                    class="fan-file-icon" alt="Adobe Reader 8">
+                            </li>
+                        </ul>
                         <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/places/folder5.png"
-                            class="app-icon" alt="Downloads">
+                            class="app-icon" style="opacity: 0;" alt="Downloads">
                         <div class="collapse-folder-button">
                             <div class="chevron-bottom"></div>
                         </div>
@@ -1039,7 +1082,7 @@
 
     function closeGridFolder(elmnt) {
 
-        closeFolder(elmnt);
+        closeFolder(elmnt, false);
 
 
     }
@@ -1050,37 +1093,51 @@
 
     }
 
-
     function closeFanFolder(elmnt) {
         const fanList = elmnt.querySelector(".icon-fan-list");
-        if (fanList) fanList.style.bottom = "0";
-        closeFolder(elmnt);
-        setTimeout(function () {
-            if (fanList) fanList.style.visibility = "hidden";
-        }, 250);
+        if (fanList) {
+            fanList.style.bottom = "0";
+            fanList.style.width = "0";
+        }
+        closeFolder(elmnt, true);
         elmnt.querySelectorAll(".icon-fan-list-item").forEach(item => {
             const i = parseInt(item.dataset.i);
-            const x = i * 70;
+            const x = i * 69;
             item.style.transform = `translateY(${x}px) translateX(0) rotate(0)`;
+            item.querySelector(".fan-file-label").style.scale = 0;
+            setTimeout(function() {
+                item.style.width = "0";
+                item.querySelector(".fan-file-label").style.width = "0";
+            }, 250);
         });
     }
 
     function openFanFolder(elmnt) {
         const fanList = elmnt.querySelector(".icon-fan-list");
-        if (fanList) fanList.style.bottom = "70px";
+        if (fanList) {
+            fanList.style.bottom = "70px";
+            fanList.style.width = "auto";
+        }
         openFolder(elmnt);
         elmnt.querySelectorAll(".icon-fan-list-item").forEach(item => {
             const i = parseInt(item.dataset.i);
             const x = Math.pow(i, 2.4);
             const r = Math.pow(i, 1.5);
             item.style.transform = `translateY(0) translateX(${x}px) rotate(${r}deg)`;
+            item.querySelector(".fan-file-label").style.scale = 1;
+            setTimeout(function() {
+                item.style.width = "auto";
+                item.querySelector(".fan-file-label").style.width = "auto";
+            }, 0);
         });
         if (fanList) fanList.style.visibility = "visible";
     }
 
-    function closeFolder(elmnt) {
-        elmnt.querySelector(".app-icon").style.visibility = "unset";
-        elmnt.querySelector(".app-icon").style.opacity = "1";
+    function closeFolder(elmnt, isEmpty) {
+        if (!isEmpty) {
+            elmnt.querySelector(".app-icon").style.visibility = "unset";
+            elmnt.querySelector(".app-icon").style.opacity = "1";
+        }
         elmnt.querySelector(".collapse-folder-button").style.display = "none";
         tooltips.forEach(tooltip => {
             tooltip.style.display = "unset";
@@ -1096,9 +1153,9 @@
         });
     }
 
-    function toggleFolder(elmnt) {
+    function toggleFolder(elmnt, isEmpty) {
         if (elmnt.querySelector(".app-icon").style.opacity == "0") {//hide
-            closeFolder(elmnt);
+            closeFolder(elmnt, isEmpty);
         } else {                                                    //show
             openFolder(elmnt);
         }
@@ -1113,7 +1170,7 @@
     }
 
     function toggleFanFolder(elmnt) {
-        if (elmnt.querySelector(".app-icon").style.opacity == "0") {//hide
+        if (elmnt.querySelector(".collapse-folder-button").style.display == "flex") {//hide
             closeFanFolder(elmnt);
         } else {                                                    //show
             openFanFolder(elmnt);
