@@ -458,7 +458,7 @@
             display: none;
             background-color: rgba(200, 200, 200, 0.5);
             border-radius: 10px;
-            border: 2px solid white;
+            border: 2px solid black;
             justify-content: center;
             align-self: center;
             padding-bottom: 5px;
@@ -468,8 +468,8 @@
         }
 
         .chevron-bottom {
-            border-bottom: 2px solid white;
-            border-right: 2px solid white;
+            border-bottom: 2px solid black;
+            border-right: 2px solid black;
             align-self: center;
             width: 10px;
             height: 10px;
@@ -482,9 +482,8 @@
             padding: 0;
             position: absolute;
             bottom: 0;
-            right: 0;
+            right: 5px;
             transition: transform 0.25s ease-in-out, width 0.25s ease-in-out, bottom 0.25s ease-in-out;
-
         }
 
         .icon-fan-list-item {
@@ -515,8 +514,8 @@
         }
 
         .fan-file-icon {
-            width: 64px;
-            height: 64px;
+            width: 54px;
+            height: 54px;
         }
 
         .fan-open-in-finder {
@@ -532,6 +531,9 @@
             justify-self: center;
             padding: 10px;
             margin: 10px;
+        }
+        .list-item-open-in-finder {
+            scale: 0;
         }
     </style>
 </head>
@@ -793,7 +795,7 @@
                 </span>
                 <span class="icon-wrapper icon-folder" id="folder-download">
                     <ul class="icon-fan-list">
-                        <li class="icon-fan-list-item" data-i="7">
+                        <li class="icon-fan-list-item list-item-open-in-finder" data-i="7">
                             <div class="fan-file-label">Open in Finder</div>
                             <img src="https://static.thenounproject.com/png/258144-200.png" class="fan-file-icon fan-open-in-finder" alt="">
                         </li>
@@ -1002,6 +1004,7 @@
     const applicationFolderReflection = document.getElementById("folder-application-reflection");
     const downloadFolderReflection = document.getElementById("folder-download-reflection");
     const tooltips = document.querySelectorAll(".tooltip");
+    const openInFinderButton = document.querySelector(".list-item-open-in-finder");
 
     dragElement(windowContainer);
     closeWindow(closeButton);
@@ -1120,9 +1123,12 @@
         closeFolder(elmnt, true);
         elmnt.querySelectorAll(".icon-fan-list-item").forEach(item => {
             const i = parseInt(item.dataset.i);
-            const x = i * 69;
+            const x = i * 59;
             item.style.transform = `translateY(${x}px) translateX(0) rotate(0)`;
             item.querySelector(".fan-file-label").style.scale = 0;
+            setTimeout(function () {
+                openInFinderButton.style.scale = 0;
+            }, 250);
         });
     }
 
@@ -1139,6 +1145,7 @@
             const r = (2) * (i+1);
             item.style.transform = `translateY(0) translateX(${x}px) rotate(${r}deg)`;
             item.querySelector(".fan-file-label").style.scale = 1;
+            openInFinderButton.style.scale = 1;
         });
         if (fanList) fanList.style.visibility = "visible";
     }
