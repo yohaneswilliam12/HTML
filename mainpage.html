@@ -154,6 +154,14 @@
             background: linear-gradient(to bottom, rgb(232, 232, 232), rgb(146, 146, 146));
             align-content: center;
             padding: 10px 16px 10px 16px;
+            gap: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .window-actions {
+            display: flex;
+            gap: 8px;
         }
 
         .title-buttons {
@@ -161,6 +169,14 @@
             display: flex;
             flex-direction: row;
             gap: 6px;
+        }
+
+        .title-button-disabled {
+            background: linear-gradient(to bottom, rgb(179, 179, 179)50%, rgb(222, 222, 222)) !important;
+        }
+
+        .title-buttons:hover .title-button-disabled .title-button-icon {
+            display: none !important;
         }
 
         .title-button-icon {
@@ -531,8 +547,56 @@
             justify-self: center;
             padding: 10px;
         }
+
         .list-item-open-in-finder {
             scale: 0;
+        }
+
+        .system-preferences {
+            left: 25%;
+            top: 20%;
+            width: 800px;
+            display: none;
+        }
+
+        .title-caption {
+            margin-right: 57px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .window-navigation-container {
+            display: flex;
+            border: 1.5px solid rgb(128, 128, 128);
+            border-radius: 5px;
+            gap: 1.5px;
+            overflow: hidden;
+        }
+
+        .window-navigation-item {
+            background: linear-gradient(to bottom, rgb(237, 237, 237)50%, rgb(167, 167, 167));
+            width: 28px;
+            text-align: center;
+            font-family: monospace;
+            padding: 2px 0;
+            font-size: 15px;
+        }
+        .window-navigation-show-all {
+            background: linear-gradient(to bottom, rgb(237, 237, 237)50%, rgb(167, 167, 167));
+            text-align: center;
+            padding: 2px 10px;
+            font-size: 16px;
+        }
+
+        .window-spacer {
+            flex: 1;
+        }
+        .search-bar {
+            background-color: white;
+            width: 200px;
+            height: 20px;
+            border-radius: 50px;
+            border: 1.5px solid rgb(128, 128, 128);
         }
     </style>
 </head>
@@ -565,19 +629,21 @@
         </div>
     </div>
     <div class="window-container" id="window-container">
-        <div class="title-bar" id="title-bar">
-            <div class="title-buttons">
-                <div class="title-button btn-close" id="btn-close">
-                    <div class="title-button-icon">×</div>
-                    <div class="title-button-highlight"></div>
-                </div>
-                <div class="title-button btn-minimize">
-                    <div class="title-button-icon">–</div>
-                    <div class="title-button-highlight"></div>
-                </div>
-                <div class="title-button btn-fullscreen">
-                    <div class="title-button-icon">⤢</div>
-                    <div class="title-button-highlight"></div>
+        <div class="title-bar">
+                <div class="window-actions drag-handle">
+                <div class="title-buttons">
+                    <div class="title-button btn-close" id="btn-close">
+                        <div class="title-button-icon">×</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
+                    <div class="title-button btn-minimize">
+                        <div class="title-button-icon">–</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
+                    <div class="title-button btn-fullscreen">
+                        <div class="title-button-icon">⤢</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -590,7 +656,7 @@
                     No, thanks
                 </div>
             </button>
-            <button class="button btn-primary strobing bold" id="btn-accept">
+            <button class="button btn-primary strobing bold btn-accept" id="btn-accept">
                 <div class="highlight">
                 </div>
                 <div class="caption">
@@ -598,6 +664,43 @@
                 </div>
             </button>
         </div>
+    </div>
+    <div class="window-container system-preferences" id="system-preferences">
+        <div class="title-bar">
+            <div class="window-actions drag-handle">
+                <div class="title-buttons">
+                    <div class="title-button btn-close" id="btn-close">
+                        <div class="title-button-icon">×</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
+                    <div class="title-button btn-minimize">
+                        <div class="title-button-icon">–</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
+                    <div class="title-button btn-fullscreen title-button-disabled">
+                        <div class="title-button-icon">⤢</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
+                </div>
+                <div class="title-caption">
+                    System Preferences
+                </div>
+            </div>
+            <div class="window-actions">
+                <div class="window-navigation-container">
+                    <div class="window-navigation-item">&#9664;</div>
+                    <div class="window-navigation-item">&#9654;</div>
+                </div>
+                <div class="window-navigation-container">
+                    <div class="window-navigation-show-all">Show All</div>
+                </div>
+                <div class="window-spacer"></div>
+                <div class="search-bar">
+                </div>
+            </div>
+        </div>
+        <!-- <div class="dummy-placeholder"></div> -->
+
     </div>
     <div class="dock-container">
         <div class="dock"></div>
@@ -762,7 +865,7 @@
                         class="app-icon" alt="Quicktime Player">
                     <div class="tooltip">Quicktime Player</div>
                 </span>
-                <span class="icon-wrapper icon-application">
+                <span class="icon-wrapper icon-application" id="app-settings">
                     <div class="app-icon app-icon-settings">
                         <img src="https://w7.pngwing.com/pngs/630/904/png-transparent-system-preferences-preference-pane-computer-icons-apple-rim-fruit-nut-mac-thumbnail.png"
                             class="app-icon-settings-zoom" alt="Settings" />
@@ -796,7 +899,8 @@
                     <ul class="icon-fan-list">
                         <li class="icon-fan-list-item list-item-open-in-finder" data-i="7">
                             <div class="fan-file-label">Open in Finder</div>
-                            <img src="https://static.thenounproject.com/png/258144-200.png" class="fan-file-icon fan-open-in-finder" alt="">
+                            <img src="https://static.thenounproject.com/png/258144-200.png"
+                                class="fan-file-icon fan-open-in-finder" alt="">
                         </li>
                         <li class="icon-fan-list-item" data-i="6">
                             <div class="fan-file-label">Audacity</div>
@@ -988,35 +1092,10 @@
         </div>
     </div>
 </body>
-<script>
-    const windowContainer = document.getElementById("window-container");
-    const closeButton = document.getElementById("btn-close");
-    const acceptButton = document.getElementById("btn-accept");
-    const appIconWrappers = document.querySelectorAll(".icon-application");
-    const appIconReflectionWrappers = document.getElementsByClassName("dock-item-reflection")[0].querySelectorAll(".icon-wrapper");
-    const separatorResizer = document.getElementById("dock-resizer");
-    const dockContainer = document.querySelectorAll(".dock-container");
-    const dockIndicators = document.querySelectorAll(".dock-highlight");
-    const dockIndicatorReflections = document.querySelector(".dock-highlight-container-reflection").firstElementChild.querySelectorAll(".dock-highlight");
-    const applicationFolder = document.getElementById("folder-application");
-    const downloadFolder = document.getElementById("folder-download");
-    const applicationFolderReflection = document.getElementById("folder-application-reflection");
-    const downloadFolderReflection = document.getElementById("folder-download-reflection");
-    const tooltips = document.querySelectorAll(".tooltip");
-    const openInFinderButton = document.querySelector(".list-item-open-in-finder");
 
-    dragElement(windowContainer);
-    closeWindow(closeButton);
-    closeWindow(acceptButton);
-    appIconWrappers.forEach((item, index) => {
-        appBouncing(item, index);
-    });
-    resizeDock(separatorResizer);
-    gridOpen(applicationFolder, applicationFolderReflection);
-    fanOpen(downloadFolder, downloadFolderReflection);
-
+<script defer> //window
     function dragElement(elmnt) {
-        const header = document.getElementById("title-bar");
+        const header = elmnt.querySelector(".drag-handle");
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
         (header || elmnt).onmousedown = dragMouseDown;
@@ -1047,9 +1126,26 @@
 
     function closeWindow(elmnt) {
         elmnt.addEventListener("click", function (e) {
-            windowContainer.style.display = 'none';
+            elmnt.parentElement.parentElement.parentElement.parentElement.style.display = 'none';
         });
     }
+
+    function acceptWindow(elmnt) {
+        elmnt.addEventListener("click", function (e) {
+            elmnt.parentElement.parentElement.style.display = 'none';
+        });
+    }
+
+    function openApp(dockApp, appWindow) {
+        dockApp.addEventListener("click", function () {
+            setTimeout(function() {
+                appWindow.style.display = 'unset';
+            }, 600);
+        })
+    }
+</script>
+
+<script defer> //dock
 
     function appBouncing(elmnt, index) {
         elmnt.firstElementChild.addEventListener("click", function (e) {
@@ -1071,6 +1167,11 @@
     function setApplicationActive(index) {
         dockIndicators[index].querySelector("div").classList.add("highlight-item-active");
         dockIndicatorReflections[index].querySelector("div").classList.add("highlight-item-active");
+    }
+
+    function setApplicationClosed(index) {
+        dockIndicators[index].querySelector("div").classList.remove("highlight-item-active");
+        dockIndicatorReflections[index].querySelector("div").classList.remove("highlight-item-active");
     }
 
     function isApplicationActive(index) {
@@ -1141,7 +1242,7 @@
         elmnt.querySelectorAll(".icon-fan-list-item").forEach(item => {
             const i = parseInt(item.dataset.i);
             const x = Math.pow(i, 2.25);
-            const r = (2) * (i+1);
+            const r = (2) * (i + 1);
             item.style.transform = `translateY(0) translateX(${x}px) rotate(${r}deg)`;
             item.querySelector(".fan-file-label").style.scale = 1;
             openInFinderButton.style.scale = 1;
@@ -1248,6 +1349,48 @@
         }, 0);
     }
 
+</script>
+<script> //dock
+    const appIconWrappers = document.querySelectorAll(".icon-application");
+    const appIconReflectionWrappers = document.getElementsByClassName("dock-item-reflection")[0].querySelectorAll(".icon-wrapper");
+    const separatorResizer = document.getElementById("dock-resizer");
+    const dockContainer = document.querySelectorAll(".dock-container");
+    const dockIndicators = document.querySelectorAll(".dock-highlight");
+    const dockIndicatorReflections = document.querySelector(".dock-highlight-container-reflection").firstElementChild.querySelectorAll(".dock-highlight");
+    const applicationFolder = document.getElementById("folder-application");
+    const downloadFolder = document.getElementById("folder-download");
+    const applicationFolderReflection = document.getElementById("folder-application-reflection");
+    const downloadFolderReflection = document.getElementById("folder-download-reflection");
+    const tooltips = document.querySelectorAll(".tooltip");
+    const openInFinderButton = document.querySelector(".list-item-open-in-finder");
+
+    appIconWrappers.forEach((item, index) => {
+        appBouncing(item, index);
+    });
+    resizeDock(separatorResizer);
+    gridOpen(applicationFolder, applicationFolderReflection);
+    fanOpen(downloadFolder, downloadFolderReflection);
+</script>
+
+<script> //window container dummy
+    const windowContainer = document.getElementById("window-container");
+
+    dragElement(windowContainer);
+    closeWindow(windowContainer.querySelector(".btn-close"));
+    acceptWindow(windowContainer.querySelector(".btn-accept"));
+
+</script>
+
+<script> //system preferences
+    const systemPreferences = document.getElementById("system-preferences");
+    const dockSettings = document.getElementById("app-settings");
+    dragElement(systemPreferences);
+
+    closeWindow(systemPreferences.querySelector(".btn-close"));
+    openApp(dockSettings, systemPreferences);
+    systemPreferences.querySelector(".btn-close").addEventListener("click", function () {
+        setApplicationClosed(11)
+    })
 
 </script>
 
