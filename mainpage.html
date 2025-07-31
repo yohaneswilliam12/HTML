@@ -20,6 +20,11 @@
             flex: 1;
             height: 100%;
             display: flex;
+            user-select: none;
+        }
+
+        iframe, input {
+            user-select: auto;
         }
 
         .menu-bar {
@@ -559,6 +564,81 @@
             display: none;
         }
 
+        .safari {
+            left: 5%;
+            top: 5%;
+            width: 90%;
+            height: 80%;
+            display: none;
+        }
+
+        .loading-address-bar {
+            display: flex;
+            font-size: 10px;
+            align-items: center;
+            outline: 1.5px solid rgb(128, 128, 128);
+            padding: 4px;
+            gap: 10px;
+            background: linear-gradient(to bottom, rgb(195, 218, 245)50%, rgb(201, 221, 251));
+        }
+
+        .loading-address-bar img {
+            width: 16px;
+            padding: 2px;
+        }
+
+        .safari-address-bar {
+            background-color: white;
+            height: 20px;
+            border-radius: 5px;
+            border: 1.5px solid rgb(128, 128, 128);
+            display: flex;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .safari-address-bar .add-to-bookmark {
+            padding: 0 10px;
+            background: linear-gradient(to bottom, rgb(237, 237, 237)50%, rgb(167, 167, 167));
+            outline: 1.5px solid rgb(128, 128, 128);
+        }
+
+        .reload-address-bar {
+            opacity: 0.8;
+            width: 12px;
+            height: 12px;
+            margin: 4px;
+            display: none;
+        }
+
+        .safari-address-bar input {
+            background-color: transparent;
+            border: none;
+            width: 100%;
+        }
+
+        .safari-address-bar input:focus-visible {
+            outline: none;
+        }
+
+        .safari-address-bar:has(input:focus-visible) {
+            outline: 2px solid rgb(34, 104, 170);
+        }
+
+        .address-browser-icon {
+            width: 18px;
+            margin: 2px 0 2px 4px;
+        }
+
+        .browser-content {
+            height: 100%;
+        }
+
+        .browser-content iframe{
+            width: 100%;
+            height: 100%;
+        }
+
         .title-caption {
             margin-right: 57px;
             text-align: center;
@@ -629,12 +709,14 @@
             text-align: center;
             padding: 20px 0 40px 0;
         }
+
         .welcome-subtitle {
             font-size: 14px;
             font-weight: normal;
             display: block;
             padding: 10px 30px;
         }
+
     </style>
 </head>
 
@@ -745,6 +827,54 @@
         </div>
         <!-- <div class="dummy-placeholder"></div> -->
 
+    </div>
+    <div class="window-container safari" id="safari">
+        <div class="title-bar">
+            <div class="window-actions drag-handle">
+                <div class="title-buttons">
+                    <div class="title-button btn-close" id="btn-close">
+                        <div class="title-button-icon">×</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
+                    <div class="title-button btn-minimize">
+                        <div class="title-button-icon">–</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
+                    <div class="title-button btn-fullscreen">
+                        <div class="title-button-icon">⤢</div>
+                        <div class="title-button-highlight"></div>
+                    </div>
+                </div>
+                <div class="title-caption">
+                    Failed to open page
+                </div>
+            </div>
+            <div class="window-actions">
+                <div class="window-navigation-container">
+                    <div class="window-navigation-item">&#9664;</div>
+                    <div class="window-navigation-item">&#9654;</div>
+                </div>
+                <div class="safari-address-bar">
+                    <div class="add-to-bookmark">+</div>
+                    <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/apps/gnome-web-browser.png" class="address-browser-icon" alt="">
+                    <input type="text" name="address-bar-input" id="address-bar-input">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQibHSOcSI--vqUpGrmejFdajqY4UlUiaEJA&s" class="reload-address-bar" id="reload-address-bar" alt="">
+                    <div class="loading-address-bar" id="loading-address-bar">
+                        Loading
+                        <img src="https://www.ifsta.org/sites/all/themes/drupal_shop_theme/loading-circle.gif" alt="">
+                    </div>
+                </div>
+                <div class="search-bar">
+                    <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/2d4ae3f64f80701e3bef23f6211c9a3bd8ad41c8/128x128/actions/system-search.png"
+                        alt="">
+                    <input type="text" name="search-bar-input" id="">
+                </div>
+            </div>
+            <div class="safari-bookmarks-bar"></div>
+        </div>
+        <div class="browser-content">
+            <iframe src="https://yohaneswilliam12.github.io/HTML/mainpage.html" frameborder="0"></iframe>
+        </div>
     </div>
     <div class="dock-container">
         <div class="dock"></div>
@@ -866,7 +996,7 @@
                         class="app-icon" alt="Dashboard">
                     <div class="tooltip">Dashboard</div>
                 </span>
-                <span class="icon-wrapper icon-application">
+                <span class="icon-wrapper icon-application" id="app-safari">
                     <img src="https://pngimg.com/uploads/safari/safari_PNG31.png" class="app-icon" alt="Safari" />
                     <div class="tooltip">Safari</div>
                 </span>
@@ -1436,6 +1566,51 @@
     systemPreferences.querySelector(".btn-close").addEventListener("click", function () {
         setApplicationClosed(11)
     })
+
+</script>
+
+<script> //safari
+    const safari = document.getElementById("safari");
+    const dockSafari = document.getElementById("app-safari");
+    const iframeSafari = safari.querySelector("iframe");
+    const loadingSafari = document.getElementById("loading-address-bar");
+    const reloadSafari = document.getElementById("reload-address-bar");
+
+    const safariAddressBar = document.getElementById("address-bar-input");
+    dragElement(safari);
+
+    closeWindow(safari.querySelector(".btn-close"));
+    openApp(dockSafari, safari);
+    safari.querySelector(".btn-close").addEventListener("click", function () {
+        setApplicationClosed(2)
+    })
+
+    safariAddressBar.addEventListener("keypress", function(e) {
+        if (e.key === 'Enter') {
+            var url = safariAddressBar.value;
+            setLoadingAddressBar(true);
+            if(/^((https?:\/\/)?(www\.)?)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/i.test(url)) {
+                if(!url.startsWith("https://")) {
+                    url = "https://"+url;
+                }
+                iframeSafari.setAttribute("src", url);
+            } else {
+                iframeSafari.setAttribute("src", "https://www.google.com/search?"+url);
+            }
+        }
+    })
+
+    iframeSafari.addEventListener("load", function(e) {
+        setLoadingAddressBar(false);
+    })
+    iframeSafari.onload = function() {
+        safariAddressBar.value = iframeSafari.src;
+    }
+
+    function setLoadingAddressBar(state) {
+        loadingSafari.style.display = state ? "flex" : "none";
+        reloadSafari.style.display = state ? "none" : "unset";
+    }
 
 </script>
 
