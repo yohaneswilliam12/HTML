@@ -1356,6 +1356,8 @@
     }
 
     function gridOpen(elmnt, refElmnt) {
+        closeGridFolder(elmnt);
+        closeGridFolder(refElmnt);
         elmnt.addEventListener("click", function (e) {
             setBodyClickCloseGridFolder(elmnt, refElmnt);
             toggleGridFolder(elmnt);
@@ -1366,6 +1368,7 @@
 
     function fanOpen(elmnt, refElmnt) {
         closeFanFolder(elmnt);
+        closeFanFolder(refElmnt);
         elmnt.addEventListener("click", function (e) {
             setBodyClickCloseFanFolder(elmnt, refElmnt);
             toggleFanFolder(elmnt);
