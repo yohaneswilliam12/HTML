@@ -581,12 +581,17 @@
             outline: 1.5px solid rgb(128, 128, 128);
             padding: 4px;
             gap: 10px;
-            background: linear-gradient(to bottom, rgb(195, 218, 245)50%, rgb(201, 221, 251));
+            color: white;
+            background: linear-gradient(to bottom, rgb(122, 137, 155)0%, rgb(122, 137, 155)50%, rgb(101, 113, 131)51%, rgb(101, 113, 131));
         }
 
         .loading-address-bar img {
             width: 16px;
             padding: 2px;
+        }
+
+        .cancel-loading {
+            font-size: 20px;
         }
 
         .safari-address-bar {
@@ -862,8 +867,9 @@
                     <input type="text" name="address-bar-input" id="address-bar-input">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQibHSOcSI--vqUpGrmejFdajqY4UlUiaEJA&s" class="reload-address-bar" id="reload-address-bar" alt="">
                     <div class="loading-address-bar" id="loading-address-bar">
-                        Loading
                         <img src="https://www.ifsta.org/sites/all/themes/drupal_shop_theme/loading-circle.gif" alt="">
+                        Loading
+                        <div class="cancel-loading">×</div>
                     </div>
                 </div>
                 <div class="search-bar">
